@@ -8,6 +8,7 @@ const answersElement = document.getElementById('answers');
 const scoreElement = document.getElementById('score');
 const userNameElement = document.getElementById('user-name');
 const nameInput = document.getElementById('name-input');
+const loggedInUser Element = document.getElementById('logged-in-user');
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -54,7 +55,7 @@ const questions = [
         correct: 1
     },
     {
-        question: "What is the smallest prime number?",
+        question: "What is the smallest prime number ?",
         answers: ["0", "1", "2", "3"],
         correct: 2
     },
@@ -69,20 +70,23 @@ startButton.addEventListener('click', () => {
     const userName = nameInput.value.trim();
     if (userName) {
         userNameElement.textContent = `Name: ${userName}`; // Display the user's name
+        loggedInUser Element.textContent = `Logged as: ${userName}`; // Display logged-in user
         transitionTo(quizPage);
         loadQuestion();
+        saveScore(userName, score); // Save the score for the user
     } else {
         alert("Please enter your name to start the quiz.");
     }
 });
 
- nextButton.addEventListener('click', () => {
+nextButton.addEventListener('click', () => {
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         loadQuestion();
     } else {
         transitionTo(resultPage);
         scoreElement.textContent = score; // Display the score on the results page
+        saveScore(userNameElement.textContent.split(': ')[1], score); // Save the score for the user
     }
 });
 
@@ -113,11 +117,18 @@ function transitionTo(page) {
     page.classList.remove('hidden');
 }
 
+function saveScore(name, score) {
+    const scores = JSON.parse(localStorage.getItem('scores')) || {};
+    scores[name] = Math.max(scores[name] || 0, score); // Save the highest score
+    localStorage.setItem('scores', JSON.stringify(scores));
+}
+
 // Restart the quiz
 document.getElementById('restart-button').addEventListener('click', () => {
     currentQuestionIndex = 0;
     score = 0;
     nameInput.value = ''; // Clear the name input
     userNameElement.textContent = ''; // Clear the displayed name
+    loggedInUser Element.textContent = ''; // Clear the logged-in user display
     transitionTo(startPage);
 });
