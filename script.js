@@ -8,7 +8,6 @@ const answersElement = document.getElementById('answers');
 const scoreElement = document.getElementById('score');
 const userNameElement = document.getElementById('user-name');
 const nameInput = document.getElementById('name-input');
-const loggedInUser Element = document.getElementById('logged-in-user'); // Corrected variable name
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -70,7 +69,6 @@ startButton.addEventListener('click', () => {
     const userName = nameInput.value.trim();
     if (userName) {
         userNameElement.textContent = `Name: ${userName}`; // Display the user's name
-        loggedInUser Element.textContent = `Logged as: ${userName}`; // Display logged-in user
         transitionTo(quizPage);
         loadQuestion();
     } else {
@@ -78,14 +76,13 @@ startButton.addEventListener('click', () => {
     }
 });
 
-nextButton.addEventListener('click', () => {
+ nextButton.addEventListener('click', () => {
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         loadQuestion();
     } else {
         transitionTo(resultPage);
         scoreElement.textContent = score; // Display the score on the results page
-        saveScore(userNameElement.textContent.split(': ')[1], score); // Save the score for the user
     }
 });
 
@@ -116,18 +113,11 @@ function transitionTo(page) {
     page.classList.remove('hidden');
 }
 
-function saveScore(name, score) {
-    const scores = JSON.parse(localStorage.getItem('scores')) || {};
-    scores[name] = Math.max(scores[name] || 0, score); // Save the highest score
-    localStorage.setItem('scores', JSON.stringify(scores));
-}
-
 // Restart the quiz
 document.getElementById('restart-button').addEventListener('click', () => {
     currentQuestionIndex = 0;
     score = 0;
     nameInput.value = ''; // Clear the name input
     userNameElement.textContent = ''; // Clear the displayed name
-    loggedInUser Element.textContent = ''; // Clear the logged-in user display
     transitionTo(startPage);
 });
