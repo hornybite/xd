@@ -34,8 +34,8 @@ startButton.addEventListener('click', () => {
 });
 
 nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
         loadQuestion();
     } else {
         showResults();
@@ -54,6 +54,13 @@ function loadQuestion() {
         button.addEventListener('click', () => checkAnswer(index, button));
         answersElement.appendChild(button);
     });
+
+    // Update the next button text based on the current question index
+    if (currentQuestionIndex === questions.length - 1) {
+        nextButton.textContent = "See Results";
+    } else {
+        nextButton.textContent = "Next Question";
+    }
 }
 
 function checkAnswer(selectedIndex, button) {
