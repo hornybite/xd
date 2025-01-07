@@ -6,64 +6,22 @@ const nextButton = document.getElementById('next-button');
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
 const scoreElement = document.getElementById('score');
+const nameInput = document.getElementById('name-input'); // New input for name
 
 let currentQuestionIndex = 0;
 let score = 0;
+let userName = ''; // Variable to store the user's name
 
 const questions = [
-    {
-        question: "What is the capital of France?",
-        answers: ["Berlin", "Madrid", "Paris", "Rome"],
-        correct: 2
-    },
-    {
-        question: "What is 2 + 2?",
-        answers: ["3", "4", "5", "6"],
-        correct: 1
-    },
-    {
-        question: "What is the capital of Spain?",
-        answers: ["Lisbon", "Madrid", "Barcelona", "Seville"],
-        correct: 1
-    },
-    {
-        question: "Which planet is known as the Red Planet?",
-        answers: ["Earth", "Mars", "Jupiter", "Saturn"],
-        correct: 1
-    },
-    {
-        question: "What is the largest ocean on Earth?",
-        answers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-        correct: 3
-    },
-    {
-        question: "Who wrote 'Romeo and Juliet'?",
-        answers: ["Charles Dickens", "Mark Twain", "William Shakespeare", "Jane Austen"],
-        correct: 2
-    },
-    {
-        question: "What is the chemical symbol for gold?",
-        answers: ["Au", "Ag", "Pb", "Fe"],
-        correct: 0
-    },
-    {
-        question: "Which country is known as the Land of the Rising Sun?",
-        answers: ["China", "Japan", "Thailand", "South Korea"],
-        correct: 1
-    },
-    {
-        question: "What is the smallest prime number?",
-        answers: ["0", "1", "2", "3"],
-        correct: 2
-    },
-    {
-        question: "What is the main ingredient in guacamole?",
-        answers: ["Tomato", "Avocado", "Pepper", "Onion"],
-        correct: 1
-    }
+    // ... (your existing questions)
 ];
 
 startButton.addEventListener('click', () => {
+    userName = nameInput.value.trim(); // Capture the user's name
+    if (userName === '') {
+        alert('Please enter your name to start the quiz.'); // Alert if name is empty
+        return;
+    }
     transitionTo(quizPage);
     loadQuestion();
 });
@@ -126,7 +84,7 @@ function checkAnswer(selectedIndex, button) {
 }
 
 function showResults() {
-    scoreElement.textContent = score;
+    scoreElement.textContent = `${userName}, your score is: ${score}`; // Display user's name in results
     transitionTo(resultPage);
 }
 
@@ -137,7 +95,7 @@ function transitionTo(page) {
             p.classList.remove('hidden');
             p.classList.add('visible');
         } else {
-            p.classList.remove ('visible');
+            p.classList.remove('visible');
             p.classList.add('hidden');
         }
     });
@@ -147,5 +105,6 @@ function transitionTo(page) {
 document.getElementById('restart-button').addEventListener('click', () => {
     score = 0;
     currentQuestionIndex = 0;
+    nameInput.value = ''; // Clear the name input
     transitionTo(startPage);
 });
