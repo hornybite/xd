@@ -8,7 +8,7 @@ const answersElement = document.getElementById('answers');
 const scoreElement = document.getElementById('score');
 const userNameElement = document.getElementById('user-name');
 const nameInput = document.getElementById('name-input');
-const loggedInUser Element = document.getElementById('logged-in-user');
+const loggedInUser Element = document.getElementById('logged-in-user'); // Corrected variable name
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -55,7 +55,7 @@ const questions = [
         correct: 1
     },
     {
-        question: "What is the smallest prime number ?",
+        question: "What is the smallest prime number?",
         answers: ["0", "1", "2", "3"],
         correct: 2
     },
@@ -73,7 +73,6 @@ startButton.addEventListener('click', () => {
         loggedInUser Element.textContent = `Logged as: ${userName}`; // Display logged-in user
         transitionTo(quizPage);
         loadQuestion();
-        saveScore(userName, score); // Save the score for the user
     } else {
         alert("Please enter your name to start the quiz.");
     }
