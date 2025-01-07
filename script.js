@@ -6,6 +6,8 @@ const nextButton = document.getElementById('next-button');
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
 const scoreElement = document.getElementById('score');
+const userNameElement = document.getElementById('user-name');
+const nameInput = document.getElementById('name-input');
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -64,88 +66,58 @@ const questions = [
 ];
 
 startButton.addEventListener('click', () => {
-    transitionTo(quizPage);
-    loadQuestion();
-});
-
-nextButton.addEventListener('click', () => {
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
+    const userName = nameInput.value.trim();
+    if (userName) {
+        userNameElement.textContent = `Name: ${userName}`; // Display the user's name
+        transitionTo(quizPage);
         loadQuestion();
     } else {
-        showResults();
+        alert("Please enter your name to start the quiz.");
+    }
+});
+
+ nextButton.addEventListener('click', () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        transitionTo(resultPage);
+        scoreElement.textContent = score; // Display the score on the results page
     }
 });
 
 function loadQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
     questionElement.textContent = currentQuestion.question;
-    answersElement.innerHTML = '';
-    nextButton.classList.add('hidden'); // Hide the next button initially
-
+    answersElement.innerHTML = ''; // Clear previous answers
     currentQuestion.answers.forEach((answer, index) => {
         const button = document.createElement('button');
         button.textContent = answer;
-        button.addEventListener('click', () => checkAnswer(index, button));
+        button.addEventListener('click', () => checkAnswer(index));
         answersElement.appendChild(button);
     });
-
-    // Update the next button text based on the current question index
-    if (currentQuestionIndex === questions.length - 1) {
-        nextButton.textContent = "See Results";
-    } else {
-        nextButton.textContent = "Next Question";
-    }
 }
 
-function checkAnswer(selectedIndex, button) {
+function checkAnswer(selectedIndex) {
     const currentQuestion = questions[currentQuestionIndex];
-    const buttons = answersElement.querySelectorAll('button');
-
-    // Disable all answer buttons after selection
-    buttons.forEach(btn => btn.disabled = true);
-
     if (selectedIndex === currentQuestion.correct) {
         score++;
-        button.classList.add('correct');
-    } else {
-        button.classList.add('wrong');
     }
-
-    // Show feedback for the selected answer
-    buttons.forEach((btn, index) => {
-        if (index === currentQuestion.correct) {
-            btn.classList.add('correct');
-        } else {
-            btn.classList.add('wrong');
-        }
-    });
-
-    // Show the next button
-    nextButton.classList.remove('hidden');
-}
-
-function showResults() {
-    scoreElement.textContent = score;
-    transitionTo(resultPage);
+    nextButton.classList.remove('hidden'); // Show the next button
 }
 
 function transitionTo(page) {
-    const pages = [startPage, quizPage, resultPage];
-    pages.forEach(p => {
-        if (p === page) {
-            p.classList.remove('hidden');
-            p.classList.add('visible');
-        } else {
-            p.classList.remove ('visible');
-            p.classList.add('hidden');
-        }
-    });
+    startPage.classList.add('hidden');
+    quizPage.classList.add('hidden');
+    resultPage.classList.add('hidden');
+    page.classList.remove('hidden');
 }
 
 // Restart the quiz
 document.getElementById('restart-button').addEventListener('click', () => {
-    score = 0;
     currentQuestionIndex = 0;
+    score = 0;
+    nameInput.value = ''; // Clear the name input
+    userNameElement.textContent = ''; // Clear the displayed name
     transitionTo(startPage);
 });
