@@ -46,33 +46,40 @@ function loadQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
     questionElement.textContent = currentQuestion.question;
     answersElement.innerHTML = '';
+    nextButton.classList.add('hidden'); // Hide the next button initially
+
     currentQuestion.answers.forEach((answer, index) => {
         const button = document.createElement('button');
         button.textContent = answer;
-        button.addEventListener('click', () => checkAnswer(index));
+        button.addEventListener('click', () => checkAnswer(index, button));
         answersElement.appendChild(button);
     });
 }
 
-function checkAnswer(selectedIndex) {
+function checkAnswer(selectedIndex, button) {
     const currentQuestion = questions[currentQuestionIndex];
+    const buttons = answersElement.querySelectorAll('button');
+
+    // Disable all answer buttons after selection
+    buttons.forEach(btn => btn.disabled = true);
+
     if (selectedIndex === currentQuestion.correct) {
         score++;
-        showFeedback(true);
+        button.classList.add('correct');
     } else {
-        showFeedback(false);
+        button.classList.add('wrong');
     }
-}
 
-function showFeedback(isCorrect) {
-    const buttons = answersElement.querySelectorAll('button');
-    buttons.forEach((button, index) => {
-        if (index === questions[currentQuestionIndex].correct) {
-            button.classList.add('correct');
+    // Show feedback for the selected answer
+    buttons.forEach((btn, index) => {
+        if (index === currentQuestion.correct) {
+            btn.classList.add('correct');
         } else {
-            button.classList.add('wrong');
+            btn.classList.add('wrong');
         }
     });
+
+    // Show the next button
     nextButton.classList.remove('hidden');
 }
 
