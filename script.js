@@ -1,28 +1,23 @@
 const questions = [
     {
         question: "What is the capital of France?",
-        answers: ["Berlin", "Madrid", "Paris", "Lisbon"],
-        correct: 2
+        options: ["Berlin", "Madrid", "Paris", "Lisbon"],
+        answer: "Paris"
     },
     {
         question: "What is 2 + 2?",
-        answers: ["3", "4", "5", "6"],
-        correct: 1
+        options: ["3", "4", "5", "6"],
+        answer: "4"
     },
     {
         question: "What is the largest ocean on Earth?",
-        answers: ["Atlantic", "Indian", "Arctic", "Pacific"],
-        correct: 3
+        options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+        answer: "Pacific Ocean"
     }
 ];
 
 let currentQuestionIndex = 0;
 let score = 0;
-
-// Ensure the starting page is displayed when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('start-page').classList.remove('hidden');
-});
 
 document.getElementById('start-button').addEventListener('click', startQuiz);
 document.getElementById('next-button').addEventListener('click', nextQuestion);
@@ -31,28 +26,27 @@ document.getElementById('restart-button').addEventListener('click', restartQuiz)
 function startQuiz() {
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('question-page').classList.remove('hidden');
-    currentQuestionIndex = 0;
-    score = 0;
     showQuestion();
 }
 
 function showQuestion() {
-    const question = questions[currentQuestionIndex];
-    document.getElementById('question').innerText = question.question;
-    const answersContainer = document.getElementById('answers');
-    answersContainer.innerHTML = '';
+    const currentQuestion = questions[currentQuestionIndex];
+    document.getElementById('question').innerText = currentQuestion.question;
+    const optionsContainer = document.getElementById('options');
+    optionsContainer.innerHTML = '';
 
-    question.answers.forEach((answer, index) => {
-        const button = document.createElement('button');
-        button.innerText = answer;
-        button.addEventListener('click', () => selectAnswer(index));
-        answersContainer.appendChild(button);
+    currentQuestion.options.forEach(option => {
+        const button = document.createElement('div');
+        button.innerText = option;
+        button.classList.add('option');
+        button.addEventListener ('click', () => selectOption(option));
+        optionsContainer.appendChild(button);
     });
 }
 
-function selectAnswer(index) {
-    const question = questions[currentQuestionIndex];
-    if (index === question.correct) {
+function selectOption(selectedOption) {
+    const currentQuestion = questions[currentQuestionIndex];
+    if (selectedOption === currentQuestion.answer) {
         score++;
     }
     document.getElementById('next-button').classList.remove('hidden');
@@ -64,13 +58,19 @@ function nextQuestion() {
         showQuestion();
         document.getElementById('next-button').classList.add('hidden');
     } else {
-        document.getElementById('question-page').classList.add('hidden');
-        document.getElementById('end-page').classList.remove('hidden');
-        document.getElementById('score').innerText = score;
+        showScore();
     }
 }
 
+function showScore() {
+    document.getElementById('question-page').classList.add('hidden');
+    document.getElementById('end-page').classList.remove('hidden');
+    document.getElementById('score').innerText = score;
+}
+
 function restartQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
     document.getElementById('end-page').classList.add('hidden');
     document.getElementById('start-page').classList.remove('hidden');
 }
