@@ -1,98 +1,41 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden;
+    margin: 0;
 }
 
-.page {
+#app {
     text-align: center;
-    width: 100%;
-    max-width: 400px;
-    background-color: white;
+    background: white;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    transition: opacity 0.5s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    width: 300px;
 }
 
-.hidden {
-    opacity: 0;
-    pointer-events: none;
+.page {
+    display: none;
 }
 
-.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-h1, h2 {
-    color: #333;
-    margin-bottom: 20px;
+.page.hidden {
+    display: none;
 }
 
 button {
-    background-color: #007BFF;
-    color: white;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
+    background-color: #007BFF;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 10px 0;
+    transition: background-color 0.3s;
 }
 
 button:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.correct {
-    background-color: green;
-    color: white;
-    transition: background-color 0.5s ease;
-}
-
-.wrong {
-    background-color: red;
-    color: white;
-    transition: background-color 0.5s ease;
-}
-
-#answers {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%; /* Ensure answers take full width */
-}
-
-#answers button {
-    width: 100%;
-    margin: 5px 0;
-}
-
-#answers button {
-    width: 100%;
-    margin: 5px 0;
-}
-#header {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 16px;
-    color: #333;
 }
