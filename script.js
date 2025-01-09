@@ -19,6 +19,11 @@ const questions = [
 let currentQuestionIndex = 0;
 let score = 0;
 
+// Ensure the starting page is displayed when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('start-page').classList.remove('hidden');
+});
+
 document.getElementById('start-button').addEventListener('click', startQuiz);
 document.getElementById('next-button').addEventListener('click', nextQuestion);
 document.getElementById('restart-button').addEventListener('click', restartQuiz);
