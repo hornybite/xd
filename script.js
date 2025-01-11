@@ -1,18 +1,18 @@
 const questions = [
     {
         question: "What is the capital of France?",
-        options: ["Berlin", "Madrid", "Paris", "Lisbon"],
-        answer: "Paris"
+        answers: ["Berlin", "Madrid", "Paris", "Lisbon"],
+        correct: 2
     },
     {
         question: "What is 2 + 2?",
-        options: ["3", "4", "5", "6"],
-        answer: "4"
+        answers: ["3", "4", "5", "6"],
+        correct: 1
     },
     {
         question: "What is the largest ocean on Earth?",
-        options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-        answer: "Pacific Ocean"
+        answers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+        correct: 3
     }
 ];
 
@@ -26,37 +26,49 @@ document.getElementById('restart-button').addEventListener('click', restartQuiz)
 function startQuiz() {
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('question-page').classList.remove('hidden');
+    currentQuestionIndex = 0;
+    score = 0;
     showQuestion();
 }
 
 function showQuestion() {
-    const currentQuestion = questions[currentQuestionIndex];
-    document.getElementById('question').innerText = currentQuestion.question;
-    const optionsContainer = document.getElementById('options');
-    optionsContainer.innerHTML = '';
+    const question = questions[currentQuestionIndex];
+    document.getElementById('question').innerText = question.question;
+    const answersContainer = document.getElementById('answers');
+    answersContainer.innerHTML = '';
 
-    currentQuestion.options.forEach(option => {
-        const button = document.createElement('div');
-        button.innerText = option;
-        button.classList.add('option');
-        button.addEventListener ('click', () => selectOption(option));
-        optionsContainer.appendChild(button);
+    question.answers.forEach((answer, index) => {
+        const button = document.createElement('button');
+        button.innerText = answer;
+        button.classList.add('answer');
+        button.addEventListener('click', () => selectAnswer(index));
+        answersContainer.appendChild(button );
     });
+
+    document.getElementById('next-button').classList.add('hidden');
 }
 
-function selectOption(selectedOption) {
-    const currentQuestion = questions[currentQuestionIndex];
-    if (selectedOption === currentQuestion.answer) {
+function selectAnswer(index) {
+    const question = questions[currentQuestionIndex];
+    if (index === question.correct) {
         score++;
     }
     document.getElementById('next-button').classList.remove('hidden');
+    const answers = document.querySelectorAll('.answer');
+    answers.forEach((button, i) => {
+        button.disabled = true;
+        if (i === question.correct) {
+            button.style.backgroundColor = '#28a745'; // Green for correct answer
+        } else {
+            button.style.backgroundColor = '#dc3545'; // Red for incorrect answer
+        }
+    });
 }
 
 function nextQuestion() {
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         showQuestion();
-        document.getElementById('next-button').classList.add('hidden');
     } else {
         showScore();
     }
@@ -65,12 +77,10 @@ function nextQuestion() {
 function showScore() {
     document.getElementById('question-page').classList.add('hidden');
     document.getElementById('end-page').classList.remove('hidden');
-    document.getElementById('score').innerText = score;
+    document.getElementById('score').innerText = score + '/' + questions.length;
 }
 
 function restartQuiz() {
-    currentQuestionIndex = 0;
-    score = 0;
     document.getElementById('end-page').classList.add('hidden');
     document.getElementById('start-page').classList.remove('hidden');
 }
